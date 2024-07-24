@@ -1,6 +1,13 @@
 from Car import Car
 
+moves = []
+previous_moves = []
+
+
 def draw_board(move):
+    if type(move[0]) == str:
+        print(f"CAR MOVED: {move[0]}")
+        move = move[1:]
     board = [[0, 0, 0, 0, 0, 0] for i in range(6)]
     for car in move:
         for point in car.points:
@@ -14,29 +21,41 @@ def draw_board(move):
     print("+------------+")
 
 def get_valid_moves(cars):
-    print("bye")
     dirs = ("right", "left", "up", "down")
     valid_moves = []
     for car in cars:
         for dir in dirs:
             # draw_board(cars)
-            if car.can_move(dir):
-                car.move(dir)
-                # draw_board(cars)
-                valid_moves.append(cars)
-                car.undo_last_move()
-                # draw_board(cars)
+            for dist in range(1, 6):
+                if car.can_move(dir, dist, cars):
+                    car.move(dir)
+                    if car.is_in_win_pos():
+                        new_car = Car(car.length, car.direction, car.pos, car.number)
+                        new_cars = cars[:cars.index(car)] + [new_car] + cars[cars.index(car)+1:]
+                        valid_moves.append([f"#{car.number}"] + new_cars)
+                        car.undo_last_move()
+                    else:# draw_board(cars)
+                        print("CAR AFTER MOVE")
+                        print(car)
+                        print(car.pos)
+                        new_car = Car(car.length, car.direction, car.pos, car.number)
+                        new_cars = cars[:cars.index(car)] + [new_car] + cars[cars.index(car)+1:]
+                        print("NEW CARS")
+                        print(new_cars)
+                        if new_cars not in previous_moves:
+                            valid_moves.append([f"#{car.number}"] + new_cars)
+                        car.undo_last_move()
+                        # draw_board(cars)
+                else:
+                    break
 
     return valid_moves
 
 
-
-moves = []
-
 cars = []
 cars.append(Car(3, "vertical", (0, 0), 1))
 cars.append(Car(2, "horizontal", (1, 0), 2))
-cars.append(Car(2, "horizontal", (1, 2), 3))
+cars.append(Car(2, "horizontal", (1, 2), "@"))
 cars.append(Car(3, "vertical", (3, 1), 4))
 cars.append(Car(2, "vertical", (0, 3), 5))
 cars.append(Car(2, "horizontal", (1, 4), 6))
@@ -46,9 +65,14 @@ cars.append(Car(3, "vertical", (5, 3), 8))
 for move in get_valid_moves(cars):
     moves.append(move)
 
-print(moves)
-# while len(moves) > 0:
-#     pass
+print(f"NUMBER OF MOVES: {len(moves)}")
+while len(moves) > 0:
+    for move in get_valid_moves(moves[0][1:]):
+        moves.append(move)
+    moves = moves[1:]
+
+
+draw_board(cars)
 
 for move in moves:
     draw_board(move)
