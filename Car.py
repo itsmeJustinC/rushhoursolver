@@ -17,9 +17,6 @@ class Car:
             string_builder += f"X: {i[0]} | Y: {i[1]}\n"
         return string_builder
 
-    def is_in_win_pos(self):
-        return self.pos[0] == 5 and self.pos[1] == 2 and self.number == "@"
-
     def move(self, dir):
         dx = 0
         dy = 0
