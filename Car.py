@@ -17,6 +17,9 @@ class Car:
             string_builder += f"X: {i[0]} | Y: {i[1]}\n"
         return string_builder
 
+    def __lt__(self, other):
+        return self.number < other.number
+
     def move(self, dir):
         dx = 0
         dy = 0
@@ -29,9 +32,9 @@ class Car:
         if dir == "down":
             dy = 1
 
-        print(f"dX: {dx}, dY: {dy}")
+        # print(f"dX: {dx}, dY: {dy}")
         for i in range(len(self.points)):
-            print(self.points)
+            # print(self.points)
             self.points[i] = (self.points[i][0]+dx, self.points[i][1] + dy)
         self.pos = (self.pos[0]+dx, self.pos[1]+dy)
 
@@ -46,10 +49,10 @@ class Car:
                     # print(f"SELF  X: {self_point[0]} Y: {self_point[1]}")
                     # print(f"OTHER  X: {point[0]} Y: {point[1]}")
                     if self_point[0] + dx == point[0] and self_point[1] + dy == point[1]:
-                        print("### COLLISION ###")
-                        print(f"dX: {dx} dY: {dy}")
-                        print(f"SELF  X: {self_point[0]} Y: {self_point[1]}")
-                        print(f"OTHER  X: {point[0]} Y: {point[1]}")
+                        # print("### COLLISION ###")
+                        # print(f"dX: {dx} dY: {dy}")
+                        # print(f"SELF  X: {self_point[0]} Y: {self_point[1]}")
+                        # print(f"OTHER  X: {point[0]} Y: {point[1]}")
 
                         return True
         return False
@@ -62,56 +65,56 @@ class Car:
     def can_move(self, dir, dist, cars):
         cars = cars[:cars.index(self)] + cars[cars.index(self)+1:]
         # print(cars)
-        print(f"### CAR NUMBER {self.number} ###")
+        # print(f"### CAR NUMBER {self.number} ###")
         if self.direction == "vertical":
-            print("Direction is vertical")
+            # print("Direction is vertical")
             if dir not in ("up", "down"):
-                print("not up or down")
+                # print("not up or down")
                 return False
             else:
                 if dir == "up":
-                    print("DIRECTION IS UP")
-                    thing = not any(i[1] - dist < 0 for i in self.points) and not self.will_collide(0, -dist, cars)
-                    if thing:
-                        print("CAN GO UP")
-                    else:
-                        print("CANNOT GO UP")
+                    # print("DIRECTION IS UP")
+                    # thing = not any(i[1] - dist < 0 for i in self.points) and not self.will_collide(0, -dist, cars)
+                    # if thing:
+                    #     print("CAN GO UP")
+                    # else:
+                    #     print("CANNOT GO UP")
                     return not any(i[1] - dist < 0 for i in self.points) and not self.will_collide(0, -dist, cars)
                 if dir == "down":
-                    thing = not any(i[1] + dist > 5 for i in self.points) and not self.will_collide(0, dist, cars)
-                    if thing:
-                        print("CAN GO DOWN")
-                    else:
-                        print("CANNOT GO DOWN")
+                    # thing = not any(i[1] + dist > 5 for i in self.points) and not self.will_collide(0, dist, cars)
+                    # if thing:
+                    #     print("CAN GO DOWN")
+                    # else:
+                    #     print("CANNOT GO DOWN")
                     return not any(i[1] + dist > 5 for i in self.points) and not self.will_collide(0, dist, cars)
         if self.direction == "horizontal":
-            print("Direction is horizontal")
+            # print("Direction is horizontal")
             if dir not in ("right", "left"):
-                print("not left or right")
+                # print("not left or right")
                 return False
             else:
                 if dir == "right":
-                    self_movement = not any(i[0] + dist > 5 for i in self.points)
-                    collision_movement = self.will_collide(dist, 0, cars)
-                    print(f"CAN MOVE SELF: {self_movement}")
-                    print(f"WILL COLLIDE: {collision_movement}")
-                    thing = not any(i[0] + dist > 5 for i in self.points) and not self.will_collide(dist, 0, cars)
-                    if thing:
-                        print("CAN GO RIGHT")
-                    else:
-                        print("CANNOT GO RIGHT")
+                    # self_movement = not any(i[0] + dist > 5 for i in self.points)
+                    # collision_movement = self.will_collide(dist, 0, cars)
+                    # print(f"CAN MOVE SELF: {self_movement}")
+                    # print(f"WILL COLLIDE: {collision_movement}")
+                    # thing = not any(i[0] + dist > 5 for i in self.points) and not self.will_collide(dist, 0, cars)
+                    # if thing:
+                    #     print("CAN GO RIGHT")
+                    # else:
+                    #     print("CANNOT GO RIGHT")
                     return not any(i[0] + dist > 5 for i in self.points) and not self.will_collide(dist, 0, cars)
                 if dir == "left":
-                    print(self.points)
-                    self_movement = not any(i[0] - dist < 0 for i in self.points)
-                    collision_movement = self.will_collide(-dist, 0, cars)
-                    print(f"CAN MOVE SELF: {self_movement}")
-                    print(f"WILL COLLIDE: {collision_movement}")
-                    thing = not any(i[0] - dist < 0 for i in self.points) and not self.will_collide(-dist, 0, cars)
-                    if thing:
-                        print("CAN GO LEFT")
-                    else:
-                        print("CANNOT GO LEFT")
+                    # print(self.points)
+                    # self_movement = not any(i[0] - dist < 0 for i in self.points)
+                    # collision_movement = self.will_collide(-dist, 0, cars)
+                    # print(f"CAN MOVE SELF: {self_movement}")
+                    # print(f"WILL COLLIDE: {collision_movement}")
+                    # thing = not any(i[0] - dist < 0 for i in self.points) and not self.will_collide(-dist, 0, cars)
+                    # if thing:
+                    #     print("CAN GO LEFT")
+                    # else:
+                    #     print("CANNOT GO LEFT")
                     return not any(i[0] - dist < 0 for i in self.points) and not self.will_collide(-dist, 0, cars)
 
 
