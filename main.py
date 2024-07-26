@@ -52,7 +52,7 @@ end_config = None
 
 queue.append(initial_config)
 
-while len(queue) != 0:
+while len(queue) < 13:
     print(f"LENGTH OF QUEUE: {len(predecessors.keys())}")
     current_config = queue.pop(0)
     if current_config.is_solution():
@@ -63,6 +63,10 @@ while len(queue) != 0:
             predecessors[config] = current_config
             queue.append(config)
 
+print(queue)
+for config in queue:
+    print(f"Original: {tuple(sorted(config.cars))}")
+    print(f"Hash: {hash(tuple(sorted(config.cars)))}")
 
 path = get_path(predecessors, initial_config, end_config)
 generate_steps(path)
